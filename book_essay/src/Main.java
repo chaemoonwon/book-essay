@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,14 +13,26 @@ public class Main {
 //        System.out.println("책에 대한 질문을 입력하세요.");
 //        String question = scanner.nextLine();
         System.out.println("생성된 질문입니다.");
-        List<String> questions = List.of(
+        List<String> questions = new ArrayList<>(List.of(
                 "가장 인상깊은 부분은?",
                 "이해가 되질 않았던 부분은?",
                 "이 책에서 강조하는 메세지 무엇인가?"
-        );
-        Random random = new Random();
-        int questionIndex = random.nextInt(questions.size());
-        String question = questions.get(questionIndex);
+        ));
+
+        Collections.shuffle(questions);
+
+        for (int i = 0; i < questions.size(); i++) {
+            System.out.println((i + 1) + ". " + questions.get(i));
+        }
+
+
+        System.out.println("번호를 입력하세요:");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+//        Random random = new Random();
+//        int questionIndex = random.nextInt(questions.size());
+        String question = questions.get(choice - 1);
 
         System.out.println("오늘의 책 질문: " + question);
         System.out.println();
