@@ -1,31 +1,38 @@
+import service.EssayService;
+
 import java.util.*;
 
+//입력(controller)역할
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        EssayService service = new EssayService();
+
+        //입력
         String book = inputBook(scanner);
-
         System.out.println();
 
-//        System.out.println("책에 대한 질문을 입력하세요.");
-//        String question = scanner.nextLine();
-        List<String> questions = createQuestions();
+        //로직 처리
+        List<String> questions = service.createQuestions();
 
-
-        String question = selectQuestion(questions, scanner);
+        //입력 + 로직 처리
+        String question = service.selectQuestion(questions, scanner);
         System.out.println();
 
+        //입력
         String answer = inputAnswer(scanner);
+        System.out.println();
 
-        String essay = generateEssay(book, question, answer);
+        //출력
+        String essay = service.generateEssay(book, question, answer);
         System.out.println(essay);
 
     }
 
     private static String inputAnswer(Scanner scanner) {
         System.out.println("당신의 생각을 입력하세요.");
-        String answer = scanner.nextLine();
+        String answer = scanner.nextLine(); //입력 받기
         return answer;
     }
 
@@ -37,51 +44,4 @@ public class Main {
         return book;
     }
 
-    private static String generateEssay(String bookName, String question, String answer) {
-        return "== 독후감 == \n" +
-                        "나는 " + bookName + "이란 책을 읽었다.\n" +
-                        "나는 \"" + question + "\" 라는 질문을 하게 되었다. \n" +
-                        "이 질문에 대해 " + answer + "이라고 생각한다.";
-    }
-
-    private static String selectQuestion(List<String> questions, Scanner scanner) {
-        System.out.println("번호를 입력하세요:");
-        int choice;
-
-        while (true) {
-            try {
-                choice = scanner.nextInt(); //enter를 소비하지 않음.
-                scanner.nextLine();
-                if (choice >= 1 && choice <= questions.size()) {
-                    break;
-                } else {
-                    System.out.println("범위를 초과하였습니다. 다시 입력해주세요.");
-                }
-            } catch (Exception e) {
-                System.out.println("잘못된 입력입니다. 다시 입력하세요");
-                scanner.nextLine(); //입력 받은 버퍼를 비우는 역할을 함.
-            }
-        }
-
-        String question = questions.get(choice - 1);    //처리
-        System.out.println("오늘의 책 질문: " + question);
-        return question;
-    }
-
-    private static List<String> createQuestions() {
-        System.out.println("생성된 질문입니다.");
-        List<String> questions = new ArrayList<>(List.of(
-                "가장 인상깊은 부분은?",
-                "이해가 되질 않았던 부분은?",
-                "이 책에서 강조하는 메세지 무엇인가?"
-        ));
-
-        Collections.shuffle(questions);
-
-        for (int i = 0; i < questions.size(); i++) {
-            System.out.println((i + 1) + ". " + questions.get(i));
-        }
-
-        return questions;
-    }
 }
