@@ -1,15 +1,17 @@
 package service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
+/*
+ * Service
+ * 생성
+ * 처리
+ * 결과 반환
+ *
+ * */
 public class EssayService {
 
-
     public List<String> createQuestions() {
-        System.out.println("생성된 질문입니다.");
         List<String> questions = new ArrayList<>(List.of(
                 "가장 인상깊은 부분은?",
                 "이해가 되질 않았던 부분은?",
@@ -18,35 +20,27 @@ public class EssayService {
 
         Collections.shuffle(questions);
 
-        for (int i = 0; i < questions.size(); i++) {
-            System.out.println((i + 1) + ". " + questions.get(i));
-        }
-
         return questions;
     }
 
-    public String selectQuestion(List<String> questions, Scanner scanner) {
-        System.out.println("번호를 입력하세요:");
-        int choice;
+    private boolean isValid(List<String> questions, int choice) {
+        return choice >= 1 && choice <= questions.size();
+    }
 
-        while (true) {
-            try {
-                choice = scanner.nextInt(); //enter를 소비하지 않음.
-                scanner.nextLine(); //enter 소비하는 역할
-                if (choice >= 1 && choice <= questions.size()) {
-                    break;
-                } else {
-                    System.out.println("범위를 초과하였습니다. 다시 입력해주세요.");
-                }
-            } catch (Exception e) {
-                System.out.println("잘못된 입력입니다. 다시 입력하세요");
-                scanner.nextLine(); //입력 받은 버퍼를 비우는 역할을 함.
-            }
+    private int selectIndex(int choice) {
+        return choice - 1;
+    }
+
+    public QuestionResult selectQuestion(List<String> questions, int choice) {
+
+        if (!isValid(questions, choice)) {
+            return QuestionResult.invalidRange();
         }
 
-        String question = questions.get(choice - 1);    //처리
-        System.out.println("오늘의 책 질문: " + question);
-        return question;
+        int index = selectIndex(choice);
+        String question = questions.get(index);//처리
+
+        return QuestionResult.success(question);
     }
 
     public String generateEssay(String bookName, String question, String answer) {
