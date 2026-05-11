@@ -17,7 +17,6 @@ public class Main {
 
         //입력
         String book = inputView.inputBook();
-        System.out.println();
 
         //로직 처리
         List<String> questions = service.createQuestions();
@@ -27,16 +26,17 @@ public class Main {
 
         //입력 + 로직 처리
         int choice = inputView.inputChoice();
+        //정상 숫자가 아닐 때
+        while (choice < 0) {
+            outputView.printNotNumberMessage();
+            choice = inputView.inputChoice();
+        }
 
         QuestionResult result = service.selectQuestion(questions, choice);
         while (result.getStatus() != QuestionStatus.SUCCESS) {
             outputView.printInvalidChoiceMessage();
             choice = inputView.inputChoice();
             result = service.selectQuestion(questions, choice);
-            if (choice < 0) {
-                System.out.println("숫자를 입력하세요.");
-//                return;
-            }
         }
 
         String question = result.getQuestion();

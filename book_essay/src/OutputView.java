@@ -8,6 +8,7 @@ public class OutputView {
         for (int i = 0; i < questions.size(); i++) {
             System.out.println((i + 1) + ". " + questions.get(i));
         }
+
     }
 
     public void printInvalidChoiceMessage() {
@@ -17,6 +18,10 @@ public class OutputView {
 
     public void printEssay(String essay) {
         System.out.println(essay);
+    }
+
+    public void printNotNumberMessage() {
+        System.out.println("숫자를 입력하세요.");
     }
 
     public void printSelectedQuestion(String question) {
